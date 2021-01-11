@@ -28,10 +28,8 @@ public class MainActivity extends AppCompatActivity {
         Ion.with(getApplicationContext()).load("https://burning-series.io/andere-serien").asString().setCallback(new FutureCallback<String>() {
             @Override
             public void onCompleted(Exception e, String result) {
-
                 Pattern pattern = Pattern.compile("<li><a href='serie/(.*?)'<a><li>", Pattern.DOTALL);
                 Matcher matcher = pattern.matcher(result);
-                
                 while (matcher.find()) {
                     System.out.println("matcher: "+matcher.group(1));
                 }
