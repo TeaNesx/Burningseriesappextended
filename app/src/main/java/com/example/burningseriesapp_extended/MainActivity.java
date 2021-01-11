@@ -15,6 +15,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +28,13 @@ public class MainActivity extends AppCompatActivity {
         Ion.with(getApplicationContext()).load("https://burning-series.io/andere-serien").asString().setCallback(new FutureCallback<String>() {
             @Override
             public void onCompleted(Exception e, String result) {
-                System.out.println("result= " + result);
+
+                Pattern pattern = Pattern.compile("<li><a href='serie/(.*?)'<a><li>", Pattern.DOTALL);
+                Matcher matcher = pattern.matcher(result);
+                
+                while (matcher.find()) {
+                    System.out.println("matcher: "+matcher.group(1));
+                }
             }
         });
     }
