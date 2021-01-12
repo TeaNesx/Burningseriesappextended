@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                         Matcher matcher = pattern.matcher(result);
 
                         while (matcher.find()) {
-                            System.out.println("matcher: " + matcher.group(1));
                             SerieList.add(matcher.group(1));
                         }
 
@@ -88,11 +87,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 String selectedItem = lv_SerieList.getItemAtPosition(i).toString().trim();
-
                                 selectedItem = selectedItem.replace(" ", "-");
-
-                                System.out.println("selectedItem: "+selectedItem);
-
                                 Intent intent = new Intent(MainActivity.this, SeriesViewActivity.class);
                                 intent.putExtra("selectedItem", selectedItem);
                                 startActivity(intent);
