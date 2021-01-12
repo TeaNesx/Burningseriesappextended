@@ -3,14 +3,18 @@ package com.example.burningseriesapp_extended;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,14 +23,17 @@ import java.util.regex.Pattern;
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> SerieList = new ArrayList<>();
-    private ListView lv_SerieLit;
+    ArrayAdapter adapter;
+    private ListView lv_SerieList;
+    private EditText et_filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lv_SerieLit = findViewById(R.id.lv_Serie);
+        lv_SerieList = findViewById(R.id.lv_Serie);
+        et_filter = findViewById(R.id.et_filter);
 
         (new Thread(new Runnable() {
             @Override
@@ -43,8 +50,25 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         System.out.println("SerieList: "+ SerieList);
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, SerieList);
-                        lv_SerieLit.setAdapter(adapter);
+                        adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, SerieList);
+                        lv_SerieList.setAdapter(adapter);
+
+                        et_filter.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                (MainActivity.this).adapter.getFilter().filter(charSequence);
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+
+                            }
+                        });
                     }
                 });
             }
