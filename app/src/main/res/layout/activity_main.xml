@@ -10,8 +10,10 @@
         android:id="@+id/et_filter"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:background="@color/white"
-        android:text="Suche"
+        android:hint="Suchen"
         android:textColor="@color/black" />
 
     <ListView
