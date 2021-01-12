@@ -43,6 +43,15 @@ public class SeriesViewActivity extends AppCompatActivity {
                         while (titleMatcher.find()) {
                             seriesTitle.setText(titleMatcher.group(1));
                         }
+
+                        //Pattern and matcher to fetch Desc
+                        Pattern descPattern = Pattern.compile("<p>(.+?)</p>");
+                        Matcher descMatcher = descPattern.matcher(result);
+
+                        while (descMatcher.find()) {
+                            seriesDesc.setText(descMatcher.group(1));
+                        }
+
                     }
                 });
             }
