@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 String selectedItem = lv_SerieList.getItemAtPosition(i).toString().trim();
-                                selectedItem = selectedItem.replace(" ", "-");
+                                selectedItem = selectedItem.replaceAll("\\W+","-").replaceAll("^\\W*(.+?)\\W*$","$1");
                                 Intent intent = new Intent(MainActivity.this, SeriesViewActivity.class);
                                 intent.putExtra("selectedItem", selectedItem);
                                 startActivity(intent);

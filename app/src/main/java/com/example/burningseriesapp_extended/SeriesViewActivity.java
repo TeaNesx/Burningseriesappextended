@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.service.autofill.FieldClassification;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,8 +24,10 @@ public class SeriesViewActivity extends AppCompatActivity {
     TextView seriesTitle, seriesDesc;
     ImageView seriesImg;
     Spinner seasonTab;
+    ListView episodeListview;
     ArrayList<String> seasonList = new ArrayList<>();
-    ArrayAdapter<String> adapter;
+    ArrayList<String> episodeList = new ArrayList<>();
+    ArrayAdapter<String> adapter, episodeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,7 @@ public class SeriesViewActivity extends AppCompatActivity {
         seriesDesc = findViewById(R.id.tv_seriesDesc);
         seriesImg = findViewById(R.id.iv_seriesImg);
         seasonTab = findViewById(R.id.sp_season);
+        episodeListview = findViewById(R.id.lv_Episode);
 
         Bundle dataFromList = getIntent().getExtras();
         String LinkData = "serie/" + dataFromList.getString("selectedItem");
@@ -77,9 +82,19 @@ public class SeriesViewActivity extends AppCompatActivity {
                         while (seasonMatcher.find()) {
                             seasonList.add(seasonMatcher.group(1));
                             adapter = new ArrayAdapter<>(SeriesViewActivity.this, android.R.layout.simple_spinner_dropdown_item, seasonList);
-                            System.out.println("seasonList: " + seasonList);
                         }
                         seasonTab.setAdapter(adapter);
+
+                        //Pattern and matcher to fetch Episodes
+                        Pattern episodePattern = Pattern.compile("<td><a href=\".+?\" title=\"(.+?)\">.+?</a></td>");
+                        Matcher episodeMatcher = episodePattern.matcher(result);
+
+                        while (episodeMatcher.find()) {
+                            episodeList.add(episodeMatcher.group(1));
+                        }
+
+                        episodeAdapter = new ArrayAdapter<>(SeriesViewActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, episodeList);
+                        episodeListview.setAdapter(episodeAdapter);
                     }
                 });
             }
