@@ -7,6 +7,8 @@ package com.example.burningseriesapp_extended;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -92,22 +94,39 @@ public class SeriesViewActivity extends AppCompatActivity {
                             seasonTab.setSelection(0);
                         }
 
-                        //Pattern and matcher to fetch Episodes
-                        Pattern episodePattern = Pattern.compile("<td><a href=\".+?\" title=\"(.+?)\">.+?</a></td>");
-                        Matcher episodeMatcher = episodePattern.matcher(result);
+                        seasonTab.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                Ion.with(getApplicationContext()).load("https://burning-series.io/" + LinkData + "/" +String.valueOf(position)).asString().setCallback(new FutureCallback<String>() {
+                                    @Override
+                                    public void onCompleted(Exception e, String result) {
 
-                        while (episodeMatcher.find()) {
-                            episodeList.add(episodeMatcher.group(1));
-                        }
+                                        episodeList.clear();
+                                        //Pattern and matcher to fetch Episodes
+                                        Pattern episodePattern = Pattern.compile("<td><a href=\".+?\" title=\"(.+?)\">.+?</a></td>");
+                                        Matcher episodeMatcher = episodePattern.matcher(result);
 
-                        episodeAdapter = new ArrayAdapter<>(SeriesViewActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, episodeList);
-                        episodeListview.setAdapter(episodeAdapter);
+                                        while (episodeMatcher.find()) {
+                                            episodeList.add(episodeMatcher.group(1));
+                                        }
+
+                                        episodeAdapter = new ArrayAdapter<>(SeriesViewActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, episodeList);
+                                        episodeListview.setAdapter(episodeAdapter);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
                     }
                 });
 
             }
         })).start();
-    }
-    private void getContent(String season) {
+
+
     }
 }
