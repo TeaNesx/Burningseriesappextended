@@ -97,7 +97,9 @@ public class SeriesViewActivity extends AppCompatActivity {
                         seasonTab.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                Ion.with(getApplicationContext()).load("https://burning-series.io/" + LinkData + "/" +String.valueOf(position)).asString().setCallback(new FutureCallback<String>() {
+                                int season = position;
+
+                                Ion.with(getApplicationContext()).load("https://burning-series.io/" + LinkData + "/" +season).asString().setCallback(new FutureCallback<String>() {
                                     @Override
                                     public void onCompleted(Exception e, String result) {
 
@@ -112,6 +114,19 @@ public class SeriesViewActivity extends AppCompatActivity {
 
                                         episodeAdapter = new ArrayAdapter<>(SeriesViewActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, episodeList);
                                         episodeListview.setAdapter(episodeAdapter);
+
+                                        episodeListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                String episodeName = (String) parent.getItemAtPosition(position);
+                                                String episodeNameReplaced = episodeName.replaceAll("\\W+","-").replaceAll("^\\W*(.+?)\\W*$","$1");
+                                                String episode = String.valueOf(position + 1);
+                                                
+                                                String episodeLink = LinkData + "/" + season + "/" + episode + "-" + episodeNameReplaced + "/de";
+
+
+                                            }
+                                        });
                                     }
                                 });
                             }
@@ -126,7 +141,6 @@ public class SeriesViewActivity extends AppCompatActivity {
 
             }
         })).start();
-
 
     }
 }
