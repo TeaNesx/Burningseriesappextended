@@ -42,6 +42,8 @@ public class SeriesViewActivity extends AppCompatActivity {
         seasonTab = findViewById(R.id.sp_season);
         episodeListview = findViewById(R.id.lv_Episode);
 
+        episodeListview.setNestedScrollingEnabled(true);
+
         Bundle dataFromList = getIntent().getExtras();
         String LinkData = "serie/" + dataFromList.getString("selectedItem");
 
