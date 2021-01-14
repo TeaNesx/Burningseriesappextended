@@ -1,11 +1,12 @@
 package com.example.burningseriesapp_extended;
 
+/**
+ * Created by TeaNesx 13/01/2021
+ */
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.service.autofill.FieldClassification;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -16,9 +17,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,7 +49,7 @@ public class SeriesViewActivity extends AppCompatActivity {
         (new Thread(new Runnable() {
             @Override
             public void run() {
-                Ion.with(getApplicationContext()).load("https://burning-series.io/" + LinkData).asString().setCallback(new FutureCallback<String>() {
+                Ion.with(getApplicationContext()).load("https://burning-series.io/" + LinkData ).asString().setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
 
@@ -89,6 +88,10 @@ public class SeriesViewActivity extends AppCompatActivity {
                         }
                         seasonTab.setAdapter(adapter);
 
+                        if (seasonList.contains("Specials")) {
+                            seasonTab.setSelection(0);
+                        }
+
                         //Pattern and matcher to fetch Episodes
                         Pattern episodePattern = Pattern.compile("<td><a href=\".+?\" title=\"(.+?)\">.+?</a></td>");
                         Matcher episodeMatcher = episodePattern.matcher(result);
@@ -101,7 +104,10 @@ public class SeriesViewActivity extends AppCompatActivity {
                         episodeListview.setAdapter(episodeAdapter);
                     }
                 });
+
             }
         })).start();
+    }
+    private void getContent(String season) {
     }
 }
