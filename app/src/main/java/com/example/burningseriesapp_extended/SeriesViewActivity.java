@@ -6,6 +6,7 @@ package com.example.burningseriesapp_extended;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SeriesViewActivity extends AppCompatActivity {
+    public static String EXTRA_LINK = "com.example.burningseriesapp_extended.EXTRA_LINK";
     TextView seriesTitle, seriesDesc;
     ImageView seriesImg;
     Spinner seasonTab;
@@ -31,6 +33,7 @@ public class SeriesViewActivity extends AppCompatActivity {
     ArrayList<String> seasonList = new ArrayList<>();
     ArrayList<String> episodeList = new ArrayList<>();
     ArrayAdapter<String> adapter, episodeAdapter;
+    String episodeLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,7 @@ public class SeriesViewActivity extends AppCompatActivity {
         (new Thread(new Runnable() {
             @Override
             public void run() {
-                Ion.with(getApplicationContext()).load("https://burning-series.io/" + LinkData ).asString().setCallback(new FutureCallback<String>() {
+                Ion.with(getApplicationContext()).load("https://burning-series.io/" + LinkData).asString().setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
 
@@ -76,7 +79,7 @@ public class SeriesViewActivity extends AppCompatActivity {
                         Matcher imgMatcher = imgPattern.matcher(result);
 
                         while (imgMatcher.find()) {
-                            String imgsrc = "https://burning-series.io"+imgMatcher.group(1);
+                            String imgsrc = "https://burning-series.io" + imgMatcher.group(1);
                             Picasso.get().load(imgsrc).into(seriesImg);
                         }
 
@@ -99,7 +102,7 @@ public class SeriesViewActivity extends AppCompatActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 int season = position;
 
-                                Ion.with(getApplicationContext()).load("https://burning-series.io/" + LinkData + "/" +season).asString().setCallback(new FutureCallback<String>() {
+                                Ion.with(getApplicationContext()).load("https://burning-series.io/" + LinkData + "/" + season).asString().setCallback(new FutureCallback<String>() {
                                     @Override
                                     public void onCompleted(Exception e, String result) {
 
@@ -119,11 +122,17 @@ public class SeriesViewActivity extends AppCompatActivity {
                                             @Override
                                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                                 String episodeName = (String) parent.getItemAtPosition(position);
-                                                String episodeNameReplaced = episodeName.replaceAll("\\W+","-").replaceAll("^\\W*(.+?)\\W*$","$1");
-                                                String episode = String.valueOf(position + 1);
-                                                
-                                                String episodeLink = LinkData + "/" + season + "/" + episode + "-" + episodeNameReplaced + "/de";
 
+                                                //Pattern and matcher to fetch Episodes Link
+                                                Pattern episodeLinkPattern = Pattern.compile("<a href=\"(.+?)\" title=\"" + Pattern.quote(episodeName) + "\">");
+                                                Matcher episodeLinkMatcher = episodeLinkPattern.matcher(result);
+                                                while (episodeLinkMatcher.find()) {
+                                                    episodeLink = episodeLinkMatcher.group(1);
+                                                }
+
+                                                Intent intent = new Intent(SeriesViewActivity.this, WebPreviewActivity.class);
+                                                intent.putExtra(EXTRA_LINK, episodeLink);
+                                                startActivity(intent);
 
                                             }
                                         });
