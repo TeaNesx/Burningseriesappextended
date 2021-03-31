@@ -5,17 +5,21 @@ package com.example.burningseriesapp_extended;
  */
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.burningseriesapp_extended.ViewModel.MainActivityViewModel;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
@@ -24,9 +28,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
 
     ArrayList<String> SerieList = new ArrayList<>();
     ArrayList<String> LinkList = new ArrayList<>();
+    MainActivityViewModel mMainActivityViewmodel;
 
     ArrayAdapter adapter;
     private ListView lv_SerieList;
@@ -40,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         lv_SerieList = findViewById(R.id.lv_Serie);
         et_filter = findViewById(R.id.et_filter);
 
+        /*
         (new Thread(new Runnable() {
             @Override
             public void run() {
@@ -98,7 +105,12 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         })).start();
-
+         */
+        mMainActivityViewmodel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        mMainActivityViewmodel.getSerie().observe(this, series -> {
+            adapter.notifyDataSetChanged();
+            System.out.println("series: " + series);
+        });
 
     }
 }
