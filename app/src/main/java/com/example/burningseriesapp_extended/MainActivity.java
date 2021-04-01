@@ -5,6 +5,7 @@ package com.example.burningseriesapp_extended;
  */
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -107,10 +108,9 @@ public class MainActivity extends AppCompatActivity {
         })).start();
          */
         mMainActivityViewmodel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        mMainActivityViewmodel.getSerie().observe(this, series -> {
-            adapter.notifyDataSetChanged();
-            System.out.println("series: " + series);
-        });
+
+        System.out.println("Serie: " + mMainActivityViewmodel.getSerie());
+
 
     }
 }

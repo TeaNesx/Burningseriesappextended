@@ -21,7 +21,7 @@ public class WebPreviewActivity extends AppCompatActivity {
     WebView webView;
     String extra_url;
 
-    @SuppressLint("JavascriptInterface")
+    @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

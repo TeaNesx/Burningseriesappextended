@@ -11,19 +11,15 @@ import java.util.List;
 
 public class MainActivityViewModel extends ViewModel {
 
-    private MutableLiveData<List<Serie>> mSerie;
+    private MutableLiveData<List<String>> getSerieURLMutableLiveData;
     private SerieRepository mRepoSerie;
 
     public void init() {
-        if (mSerie == null) {
-            return;
-        }
-
         mRepoSerie = SerieRepository.getInstance();
-        mSerie = mRepoSerie.getSerie();
+        getSerieURLMutableLiveData = mRepoSerie.getSerieURLMutableLiveData();
     }
 
-    public LiveData<List<Serie>> getSerie() {
-        return mSerie;
+    public MutableLiveData<List<String>> getSerie() {
+        return mRepoSerie.getSerie();
     }
 }
