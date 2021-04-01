@@ -20,7 +20,7 @@ public class SerieRepository {
     private static SerieRepository instance;
 
 
-    private MutableLiveData <List<String>> serieURLMutableLiveData;
+    private MutableLiveData <List<String>> serieURLMutableLiveData = new MutableLiveData<>();
     private ArrayList<String> serieURL;
 
 
@@ -57,7 +57,6 @@ public class SerieRepository {
      */
 
     public MutableLiveData<List<String>> getSerie() {
-        serieURLMutableLiveData = new MutableLiveData<>();
 
         Ion.with((IonContext) SerieRepository.this).load("https://burning-series.io/andere-serien").asString().setCallback(new FutureCallback<String>() {
             @Override
@@ -72,7 +71,6 @@ public class SerieRepository {
                 }
 
                 System.out.println("serieURL: " + serieURL);
-
                 serieURLMutableLiveData.setValue(serieURL);
 
             }
