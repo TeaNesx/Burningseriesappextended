@@ -25,9 +25,11 @@ import java.util.regex.Pattern;
 public class SerieRepository {
     private final String TAG = getClass().getSimpleName();
     private static SerieRepository instance;
-    private ArrayList<String> serieURL = new ArrayList<>();
+    private ArrayList<String> serieName = new ArrayList<>();
+    private ArrayList<String> serieUrl = new ArrayList<>();
 
-    private MutableLiveData <List<String>> serieURLMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData <List<String>> serieNameMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData <List<String>> serieUrlMutableLiveData = new MutableLiveData<>();
 
     public static SerieRepository getInstance(){
         if(instance == null){
@@ -37,6 +39,7 @@ public class SerieRepository {
     }
 
     public MutableLiveData<List<String>> getSerie(Context context) {
+
         (new Thread(new Runnable() {
             @Override
             public void run() {
@@ -47,21 +50,50 @@ public class SerieRepository {
                         //Pattern and matcher to fetch url
                         Pattern pattern = Pattern.compile("<li><a href=\".+?\" title=\".+?\">(.+?)</a></li>", Pattern.DOTALL);
                         Matcher matcher = pattern.matcher(result);
-                        System.out.println("result: "+ result);
 
                         while (matcher.find()) {
-                            serieURL.add(matcher.group(1));
+                            serieName.add(matcher.group(1));
                         }
-                        serieURLMutableLiveData.setValue(serieURL);
+                        serieNameMutableLiveData.setValue(serieName);
                     }
                 });
             }
         })).start();
 
-        return serieURLMutableLiveData;
+        return serieNameMutableLiveData;
     }
 
-    public MutableLiveData<List<String>> getSerieURLMutableLiveData() {
-        return serieURLMutableLiveData;
+    public MutableLiveData<List<String>> getSerieUrl (Context context) {
+
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Ion.with(context).load("https://burning-series.io/andere-serien").asString().setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+
+                        //Pattern and matcher to fetch url
+                        Pattern LinkPattern = Pattern.compile("<li><a href=\"(.+?)\" title=\".+?\">.+?</a></li>", Pattern.DOTALL);
+                        Matcher LinkMatcher = LinkPattern.matcher(result);
+
+                        while (LinkMatcher.find()) {
+                            serieUrl.add(LinkMatcher.group(1));
+                        }
+
+                        serieUrlMutableLiveData.setValue(serieUrl);
+                    }
+                });
+            }
+        })).start();
+
+        return serieUrlMutableLiveData;
+    }
+
+    public MutableLiveData<List<String>> getSerieUrlMutableLiveData() {
+        return serieUrlMutableLiveData;
+    }
+
+    public MutableLiveData<List<String>> getSerieNameMutableLiveData() {
+        return serieNameMutableLiveData;
     }
 }
