@@ -39,9 +39,11 @@ public class SerieRepository {
     }
 
     public MutableLiveData<List<String>> getSerieName(Context context) {
+
         (new Thread(new Runnable() {
             @Override
             public void run() {
+
                 Ion.with(context).load("https://bs.to/andere-serien").asString().setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
@@ -57,6 +59,7 @@ public class SerieRepository {
                         serieNameMutableLiveData.setValue(serieName);
                     }
                 });
+                
             }
         })).start();
 

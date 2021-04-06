@@ -27,4 +27,8 @@ public class MainActivityViewModel extends ViewModel {
     public MutableLiveData<List<String>> getSerieName(Context context) {
         return mRepoSerie.getSerieName(context);
     }
+
+    public MutableLiveData<List<String>> getSerieURL(Context context) {
+        return mRepoSerie.getSerieUrl(context);
+    }
 }
