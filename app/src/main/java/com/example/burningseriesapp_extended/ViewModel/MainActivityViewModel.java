@@ -15,14 +15,16 @@ import java.util.List;
 public class MainActivityViewModel extends ViewModel {
 
     private MutableLiveData<List<String>> getSerieURLMutableLiveData;
+    private MutableLiveData<List<String>> getSerieNameMutableLiveData;
     private SerieRepository mRepoSerie;
 
     public void init() {
         mRepoSerie = SerieRepository.getInstance();
+        getSerieURLMutableLiveData = mRepoSerie.getSerieNameMutableLiveData();
         getSerieURLMutableLiveData = mRepoSerie.getSerieURLMutableLiveData();
     }
 
-    public MutableLiveData<List<String>> getSerie(Context context) {
-        return mRepoSerie.getSerie(context);
+    public MutableLiveData<List<String>> getSerieName(Context context) {
+        return mRepoSerie.getSerieName(context);
     }
 }

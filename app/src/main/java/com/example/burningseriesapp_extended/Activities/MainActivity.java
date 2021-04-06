@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         mMainActivityViewmodel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         mMainActivityViewmodel.init();
         
-        mMainActivityViewmodel.getSerie(this).observe(this, new Observer<List<String>>() {
+        mMainActivityViewmodel.getSerieName(this).observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> SerieName) {
                 adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, SerieName);

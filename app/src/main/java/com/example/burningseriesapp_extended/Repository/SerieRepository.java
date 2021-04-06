@@ -26,8 +26,10 @@ public class SerieRepository {
     private final String TAG = getClass().getSimpleName();
     private static SerieRepository instance;
     private ArrayList<String> serieURL = new ArrayList<>();
+    private ArrayList<String> serieName = new ArrayList<>();
 
     private MutableLiveData <List<String>> serieURLMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData <List<String>> serieNameMutableLiveData = new MutableLiveData<>();
 
     public static SerieRepository getInstance(){
         if(instance == null){
@@ -36,23 +38,50 @@ public class SerieRepository {
         return instance;
     }
 
-    public MutableLiveData<List<String>> getSerie(Context context) {
+    public MutableLiveData<List<String>> getSerieName(Context context) {
         (new Thread(new Runnable() {
             @Override
             public void run() {
-                Ion.with(context).load("https://burning-series.io/andere-serien").asString().setCallback(new FutureCallback<String>() {
+                Ion.with(context).load("https://bs.to/andere-serien").asString().setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
 
-                        //Pattern and matcher to fetch url
+                        //Pattern and matcher to fetch Name
                         Pattern pattern = Pattern.compile("<li><a href=\".+?\" title=\".+?\">(.+?)</a></li>", Pattern.DOTALL);
                         Matcher matcher = pattern.matcher(result);
                         System.out.println("result: "+ result);
 
                         while (matcher.find()) {
-                            serieURL.add(matcher.group(1));
+                            serieName.add(matcher.group(1));
                         }
+                        serieNameMutableLiveData.setValue(serieName);
+                    }
+                });
+            }
+        })).start();
+
+        return serieNameMutableLiveData;
+    }
+
+    public MutableLiveData<List<String>> getSerieUrl (Context context) {
+
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Ion.with(context).load("https://bs.to/andere-serien").asString().setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+
+                        //Pattern and matcher to fetch url
+                        Pattern LinkPattern = Pattern.compile("<li><a href=\"(.+?)\" title=\".+?\">.+?</a></li>", Pattern.DOTALL);
+                        Matcher LinkMatcher = LinkPattern.matcher(result);
+
+                        while (LinkMatcher.find()) {
+                            serieURL.add(LinkMatcher.group(1));
+                        }
+
                         serieURLMutableLiveData.setValue(serieURL);
+
                     }
                 });
             }
@@ -63,5 +92,9 @@ public class SerieRepository {
 
     public MutableLiveData<List<String>> getSerieURLMutableLiveData() {
         return serieURLMutableLiveData;
+    }
+
+    public MutableLiveData<List<String>> getSerieNameMutableLiveData() {
+        return serieNameMutableLiveData;
     }
 }
