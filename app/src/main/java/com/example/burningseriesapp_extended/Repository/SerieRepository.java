@@ -59,7 +59,7 @@ public class SerieRepository {
                         serieNameMutableLiveData.setValue(serieName);
                     }
                 });
-                
+
             }
         })).start();
 
