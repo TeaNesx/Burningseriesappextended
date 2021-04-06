@@ -14,6 +14,7 @@
 
         <activity android:name=".Activities.SeriesViewActivity" />
         <activity android:name=".Activities.MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,6 +22,8 @@
             </intent-filter>
         </activity>
 
+=======
+>>>>>>> parent of 3b8b57a (Getting Url from repository and set click event)
     </application>
 
 </manifest>

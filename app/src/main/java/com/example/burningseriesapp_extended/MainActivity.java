@@ -1,4 +1,4 @@
-package com.example.burningseriesapp_extended.Activities;
+package com.example.burningseriesapp_extended;
 
 /**
  * Created by TeaNesx 12/01/2021
@@ -7,20 +7,30 @@ package com.example.burningseriesapp_extended.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+<<<<<<< HEAD:app/src/main/java/com/example/burningseriesapp_extended/Activities/MainActivity.java
+=======
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+>>>>>>> parent of 3b8b57a (Getting Url from repository and set click event):app/src/main/java/com/example/burningseriesapp_extended/MainActivity.java
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.example.burningseriesapp_extended.R;
 import com.example.burningseriesapp_extended.ViewModel.MainActivityViewModel;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
