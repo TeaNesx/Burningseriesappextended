@@ -50,9 +50,7 @@ public class SeriesViewActivity extends AppCompatActivity {
         episodeListview.setNestedScrollingEnabled(true);
 
         Bundle dataFromList = getIntent().getExtras();
-        String LinkData = dataFromList.getString("MainActivitySerieUrl");
-
-        System.out.println("LinkData: " + LinkData);
+        String LinkData = dataFromList.getString("selectedItem");
 
 //        (new Thread(new Runnable() {
 //            @Override

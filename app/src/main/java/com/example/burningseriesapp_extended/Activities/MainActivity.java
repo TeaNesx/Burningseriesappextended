@@ -1,4 +1,4 @@
-package com.example.burningseriesapp_extended;
+package com.example.burningseriesapp_extended.Activities;
 
 /**
  * Created by TeaNesx 12/01/2021
@@ -7,30 +7,17 @@ package com.example.burningseriesapp_extended;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD:app/src/main/java/com/example/burningseriesapp_extended/Activities/MainActivity.java
-=======
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
->>>>>>> parent of 3b8b57a (Getting Url from repository and set click event):app/src/main/java/com/example/burningseriesapp_extended/MainActivity.java
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.burningseriesapp_extended.R;
 import com.example.burningseriesapp_extended.ViewModel.MainActivityViewModel;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
@@ -42,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter adapter;
     private ListView lv_SerieList;
     private EditText et_filter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,20 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, SerieName);
                 lv_SerieList.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-            }
-        });
-
-        mMainActivityViewmodel.getSerieUrl(this).observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> serieUrl) {
-                lv_SerieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(MainActivity.this, SeriesViewActivity.class);
-                        intent.putExtra("MainActivitySerieUrl", serieUrl.get(i));
-                        MainActivity.this.startActivity(intent);
-                    }
-                });
             }
         });
     }

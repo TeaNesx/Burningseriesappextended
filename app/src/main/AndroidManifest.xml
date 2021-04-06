@@ -22,8 +22,5 @@
             </intent-filter>
         </activity>
 
-=======
->>>>>>> parent of 3b8b57a (Getting Url from repository and set click event)
     </application>
-
 </manifest>
