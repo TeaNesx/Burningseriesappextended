@@ -8,7 +8,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter adapter;
     private ListView lv_SerieList;
     private EditText et_filter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +111,20 @@ public class MainActivity extends AppCompatActivity {
                 adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, SerieName);
                 lv_SerieList.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+            }
+        });
+
+        mMainActivityViewmodel.getSerieUrl(this).observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> serieUrl) {
+                lv_SerieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(MainActivity.this, SeriesViewActivity.class);
+                        intent.putExtra("MainActivitySerieUrl", serieUrl.get(i));
+                        MainActivity.this.startActivity(intent);
+                    }
+                });
             }
         });
     }
