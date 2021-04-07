@@ -2,10 +2,8 @@ package com.example.burningseriesapp_extended.Repository;
 
 import android.content.Context;
 
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.burningseriesapp_extended.Model.Serie;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
@@ -16,7 +14,6 @@ import java.util.regex.Pattern;
 
 
 public class EpisodeRepository {
-    private final String TAG = getClass().getSimpleName();
 
     private static EpisodeRepository instance;
 
@@ -31,6 +28,9 @@ public class EpisodeRepository {
 
     private List<String> serieSeason = new ArrayList<>();
     private MutableLiveData<List<String>> serieSeasonMutableLiveData = new MutableLiveData<>();
+
+    private List<String> serieEpisode = new ArrayList<>();
+    private MutableLiveData<List<String>> serieEpisodeMutableLiveData = new MutableLiveData<>();
 
     public static EpisodeRepository getInstace() {
         if (instance == null) {
@@ -121,6 +121,7 @@ public class EpisodeRepository {
                 Ion.with(context).load("https://burning-series.io/"+serieLink).asString().setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
+                        serieSeason.clear();
 
                         //Pattern and matcher to fetch Season
                         Pattern seasonPattern = Pattern.compile("<li class=\"s.+?\"><a href=\".+?\">(.+?)</a></li>");
@@ -137,5 +138,56 @@ public class EpisodeRepository {
         })).start();
 
         return serieSeasonMutableLiveData;
+    }
+
+    public MutableLiveData<List<String>> getSerieEpisode (Context context, String serieLink, String season) {
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Ion.with(context).load("https://burning-series.io/"+serieLink+"/"+season).asString().setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        serieEpisode.clear();
+
+                        //Pattern and matcher to fetch Episodes
+                        Pattern episodePattern = Pattern.compile("<td><a href=\".+?\" title=\"(.+?)\">.+?</a></td>");
+                        Matcher episodeMatcher = episodePattern.matcher(result);
+
+                        while (episodeMatcher.find()) {
+                            serieEpisode.add(episodeMatcher.group(1));
+                        }
+
+                        serieEpisodeMutableLiveData.setValue(serieEpisode);
+                    }
+                });
+            }
+        })).start();
+
+        return serieEpisodeMutableLiveData;
+    }
+
+    public MutableLiveData<List<String>> getSerieEpisode (Context context, String serieLink) {
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Ion.with(context).load("https://burning-series.io/"+serieLink).asString().setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+
+                        //Pattern and matcher to fetch Episodes
+                        Pattern episodePattern = Pattern.compile("<td><a href=\".+?\" title=\"(.+?)\">.+?</a></td>");
+                        Matcher episodeMatcher = episodePattern.matcher(result);
+
+                        while (episodeMatcher.find()) {
+                            serieEpisode.add(episodeMatcher.group(1));
+                        }
+
+                        serieEpisodeMutableLiveData.setValue(serieEpisode);
+                    }
+                });
+            }
+        })).start();
+
+        return serieEpisodeMutableLiveData;
     }
 }

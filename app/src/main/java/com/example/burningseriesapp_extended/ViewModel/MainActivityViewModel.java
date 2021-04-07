@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.burningseriesapp_extended.Model.Serie;
 import com.example.burningseriesapp_extended.Repository.SerieRepository;
 
 import java.io.IOException;

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -36,10 +37,7 @@ public class SeriesViewActivity extends AppCompatActivity {
     ImageView seriesImg;
     Spinner seasonTab;
     ListView episodeListview;
-    ArrayList<String> seasonList = new ArrayList<>();
-    ArrayList<String> episodeList = new ArrayList<>();
     ArrayAdapter<String> adapter, episodeAdapter;
-    String episodeLink;
 
     SerieViewActivityViewModel mSerieViewModelActivity;
 
@@ -95,38 +93,58 @@ public class SeriesViewActivity extends AppCompatActivity {
                 }
             }
         });
-//        (new Thread(new Runnable() {
+
+        mSerieViewModelActivity.initSerieEpisode(SeriesViewActivity.this, LinkData);
+        mSerieViewModelActivity.getSerieEpisode().observe(SeriesViewActivity.this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> serieEpisode) {
+                episodeAdapter = new ArrayAdapter<>(SeriesViewActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, serieEpisode);
+                episodeListview.setAdapter(episodeAdapter);
+
+                seasonTab.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        String season = String.valueOf(i);
+
+                        mSerieViewModelActivity.initSerieEpisode(SeriesViewActivity.this, LinkData, season);
+                        mSerieViewModelActivity.getSerieEpisode().observe(SeriesViewActivity.this, new Observer<List<String>>() {
+                            @Override
+                            public void onChanged(List<String> serieEpisode) {
+                                episodeAdapter = new ArrayAdapter<>(SeriesViewActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, serieEpisode);
+                                episodeListview.setAdapter(episodeAdapter);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+        });
+
+
+
+//        seasonTab.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
-//            public void run() {
-//                Ion.with(getApplicationContext()).load("https://burning-series.io/" + LinkData).asString().setCallback(new FutureCallback<String>() {
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                String season = String.valueOf(i);
+//
+//                mSerieViewModelActivity.initSerieEpisode(SeriesViewActivity.this, LinkData, season);
+//                mSerieViewModelActivity.getSerieEpisode().observe(SeriesViewActivity.this, new Observer<List<String>>() {
 //                    @Override
-//                    public void onCompleted(Exception e, String result) {
-//
-//                        //Pattern and matcher to fetch title
-//                        Pattern titlePattern = Pattern.compile("<h2>\\s*(.+?)\\s*<small>Staffel \\d+<\\/small>\\s*<\\/h2>", Pattern.DOTALL);
-//                        Matcher titleMatcher = titlePattern.matcher(result);
-//
-//                        while (titleMatcher.find()) {
-//                            seriesTitle.setText(titleMatcher.group(1));
-//                        }
-//
-//                        //Pattern and matcher to fetch Desc
-//                        Pattern descPattern = Pattern.compile("<p>(.+?)</p>");
-//                        Matcher descMatcher = descPattern.matcher(result);
-//
-//                        while (descMatcher.find()) {
-//                            seriesDesc.setText(descMatcher.group(1));
-//                        }
-//
-//                        //Pattern and matcher to fetch image
-//                        Pattern imgPattern = Pattern.compile("<img src=\"(.+?)\" alt=\"Cover\" />");
-//                        Matcher imgMatcher = imgPattern.matcher(result);
-//
-//                        while (imgMatcher.find()) {
-//                            String imgsrc = "https://burning-series.io" + imgMatcher.group(1);
-//                            Picasso.get().load(imgsrc).into(seriesImg);
-//                        }
-//
+//                    public void onChanged(List<String> serieEpisode) {
+//                        episodeAdapter = new ArrayAdapter<>(SeriesViewActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, serieEpisode);
+//                        episodeListview.setAdapter(episodeAdapter);
+//                    }
+//                });
+//            }
+//        });
+
+
+
+
 //                        //Pattern and matcher to fetch Season
 //                        Pattern seasonPattern = Pattern.compile("<li class=\"s.+?\"><a href=\".+?\">(.+?)</a></li>");
 //                        Matcher seasonMatcher = seasonPattern.matcher(result);
@@ -162,24 +180,7 @@ public class SeriesViewActivity extends AppCompatActivity {
 //                                        episodeAdapter = new ArrayAdapter<>(SeriesViewActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, episodeList);
 //                                        episodeListview.setAdapter(episodeAdapter);
 //
-//                                        episodeListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                                            @Override
-//                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                                                String episodeName = (String) parent.getItemAtPosition(position);
 //
-//                                                //Pattern and matcher to fetch Episodes Link
-//                                                Pattern episodeLinkPattern = Pattern.compile("<a href=\"(.+?)\" title=\"" + Pattern.quote(episodeName) + "\">");
-//                                                Matcher episodeLinkMatcher = episodeLinkPattern.matcher(result);
-//                                                while (episodeLinkMatcher.find()) {
-//                                                    episodeLink = episodeLinkMatcher.group(1);
-//                                                }
-//
-//                                                Intent intent = new Intent(SeriesViewActivity.this, WebPreviewActivity.class);
-//                                                intent.putExtra(EXTRA_LINK, episodeLink);
-//                                                startActivity(intent);
-//
-//                                            }
-//                                        });
 //                                    }
 //                                });
 //                            }

@@ -5,9 +5,9 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.burningseriesapp_extended.Model.Serie;
 import com.example.burningseriesapp_extended.Repository.EpisodeRepository;
 
+import java.security.spec.ECPoint;
 import java.util.List;
 
 public class SerieViewActivityViewModel extends ViewModel {
@@ -16,6 +16,7 @@ public class SerieViewActivityViewModel extends ViewModel {
     private MutableLiveData<String> getSerieDescriptionMutableLiveData;
     private MutableLiveData<String> getSerieImageMutableLiveData;
     private MutableLiveData<List<String>> getSerieSeasonMutableLiveData;
+    private MutableLiveData<List<String>> getSerieEpisodeMutableLiveData;
 
     private EpisodeRepository mRepoEpisode;
 
@@ -39,6 +40,16 @@ public class SerieViewActivityViewModel extends ViewModel {
         getSerieSeasonMutableLiveData = mRepoEpisode.getSerieSeason(context, serieLink);
     }
 
+    public void initSerieEpisode(Context context, String serieLink) {
+        mRepoEpisode = EpisodeRepository.getInstace();
+        getSerieEpisodeMutableLiveData = mRepoEpisode.getSerieEpisode(context, serieLink);
+    }
+
+    public void initSerieEpisode(Context context, String serieLink, String season) {
+        mRepoEpisode = EpisodeRepository.getInstace();
+        getSerieEpisodeMutableLiveData = mRepoEpisode.getSerieEpisode(context, serieLink, season);
+    }
+
     public MutableLiveData<String> getSerieTitle() {
         return getSerieTitleMutableLiveData;
     }
@@ -53,5 +64,9 @@ public class SerieViewActivityViewModel extends ViewModel {
 
     public MutableLiveData<List<String>> getSerieSeason() {
         return getSerieSeasonMutableLiveData;
+    }
+
+    public MutableLiveData<List<String>> getSerieEpisode() {
+        return getSerieEpisodeMutableLiveData;
     }
 }
