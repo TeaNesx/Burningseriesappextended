@@ -26,6 +26,7 @@ import com.koushikdutta.ion.Ion;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,6 +83,18 @@ public class SeriesViewActivity extends AppCompatActivity {
             }
         });
 
+        mSerieViewModelActivity.initSerieSeason(this, LinkData);
+        mSerieViewModelActivity.getSerieSeason().observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> viewModelSerieSeason) {
+                adapter = new ArrayAdapter<>(SeriesViewActivity.this, android.R.layout.simple_spinner_dropdown_item, viewModelSerieSeason);
+                seasonTab.setAdapter(adapter);
+
+                if (viewModelSerieSeason.contains("Specials")) {
+                    seasonTab.setSelection(0);
+                }
+            }
+        });
 //        (new Thread(new Runnable() {
 //            @Override
 //            public void run() {

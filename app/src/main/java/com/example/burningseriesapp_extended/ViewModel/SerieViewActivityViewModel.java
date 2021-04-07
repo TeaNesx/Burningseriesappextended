@@ -8,12 +8,14 @@ import androidx.lifecycle.ViewModel;
 import com.example.burningseriesapp_extended.Model.Serie;
 import com.example.burningseriesapp_extended.Repository.EpisodeRepository;
 
+import java.util.List;
+
 public class SerieViewActivityViewModel extends ViewModel {
 
     private MutableLiveData<String> getSerieTitleMutableLiveData;
     private MutableLiveData<String> getSerieDescriptionMutableLiveData;
     private MutableLiveData<String> getSerieImageMutableLiveData;
-    private String imgSrc;
+    private MutableLiveData<List<String>> getSerieSeasonMutableLiveData;
 
     private EpisodeRepository mRepoEpisode;
 
@@ -32,6 +34,11 @@ public class SerieViewActivityViewModel extends ViewModel {
         getSerieImageMutableLiveData = mRepoEpisode.getSerieImage(context, serieLink);
     }
 
+    public void initSerieSeason(Context context, String serieLink) {
+        mRepoEpisode = EpisodeRepository.getInstace();
+        getSerieSeasonMutableLiveData = mRepoEpisode.getSerieSeason(context, serieLink);
+    }
+
     public MutableLiveData<String> getSerieTitle() {
         return getSerieTitleMutableLiveData;
     }
@@ -42,5 +49,9 @@ public class SerieViewActivityViewModel extends ViewModel {
 
     public MutableLiveData<String> getSerieImage() {
         return getSerieImageMutableLiveData;
+    }
+
+    public MutableLiveData<List<String>> getSerieSeason() {
+        return getSerieSeasonMutableLiveData;
     }
 }

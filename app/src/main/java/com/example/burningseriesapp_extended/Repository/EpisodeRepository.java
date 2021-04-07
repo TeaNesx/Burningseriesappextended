@@ -9,6 +9,8 @@ import com.example.burningseriesapp_extended.Model.Serie;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,8 +26,11 @@ public class EpisodeRepository {
     private String serieDescription;
     private MutableLiveData<String> serieDescriptionMutableLiveData = new MutableLiveData<>();
 
-    String imgSrc;
+    private String imgSrc;
     private MutableLiveData<String> serieImageMutableLiveData = new MutableLiveData<>();
+
+    private List<String> serieSeason = new ArrayList<>();
+    private MutableLiveData<List<String>> serieSeasonMutableLiveData = new MutableLiveData<>();
 
     public static EpisodeRepository getInstace() {
         if (instance == null) {
@@ -107,5 +112,30 @@ public class EpisodeRepository {
         })).start();
 
         return serieImageMutableLiveData;
+    }
+
+    public MutableLiveData<List<String>> getSerieSeason (Context context, String serieLink) {
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Ion.with(context).load("https://burning-series.io/"+serieLink).asString().setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+
+                        //Pattern and matcher to fetch Season
+                        Pattern seasonPattern = Pattern.compile("<li class=\"s.+?\"><a href=\".+?\">(.+?)</a></li>");
+                        Matcher seasonMatcher = seasonPattern.matcher(result);
+
+                        while (seasonMatcher.find()) {
+                            serieSeason.add(seasonMatcher.group(1));
+                        }
+
+                        serieSeasonMutableLiveData.setValue(serieSeason);
+                    }
+                });
+            }
+        })).start();
+
+        return serieSeasonMutableLiveData;
     }
 }

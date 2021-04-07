@@ -54,7 +54,6 @@ public class SerieRepository {
     }
 
     public MutableLiveData<List<String>> getSerieUrl (Context context) {
-
         (new Thread(new Runnable() {
             @Override
             public void run() {
