@@ -5,6 +5,8 @@ package com.example.burningseriesapp_extended.Activities;
  */
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.burningseriesapp_extended.R;
+import com.example.burningseriesapp_extended.ViewModel.MainActivityViewModel;
+import com.example.burningseriesapp_extended.ViewModel.SerieViewActivityViewModel;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.squareup.picasso.Picasso;
@@ -27,7 +31,7 @@ import java.util.regex.Pattern;
 
 public class SeriesViewActivity extends AppCompatActivity {
     public static String EXTRA_LINK = "com.example.burningseriesapp_extended.EXTRA_LINK";
-    TextView seriesTitle, seriesDesc;
+    TextView serieTitle, seriesDesc;
     ImageView seriesImg;
     Spinner seasonTab;
     ListView episodeListview;
@@ -36,21 +40,47 @@ public class SeriesViewActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter, episodeAdapter;
     String episodeLink;
 
+    SerieViewActivityViewModel mSerieViewModelActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_series_view);
 
-        seriesTitle = findViewById(R.id.tv_seriesTitle);
+        serieTitle = findViewById(R.id.tv_seriesTitle);
         seriesDesc = findViewById(R.id.tv_seriesDesc);
         seriesImg = findViewById(R.id.iv_seriesImg);
         seasonTab = findViewById(R.id.sp_season);
         episodeListview = findViewById(R.id.lv_Episode);
-
         episodeListview.setNestedScrollingEnabled(true);
 
         Bundle dataFromList = getIntent().getExtras();
         String LinkData = dataFromList.getString("MainActivitySerieUrl");
+        mSerieViewModelActivity = new ViewModelProvider(this).get(SerieViewActivityViewModel.class);
+
+        mSerieViewModelActivity.initSerieTitle(this, LinkData);
+        mSerieViewModelActivity.getSerieTitle().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String viewModelSerieTitle) {
+                serieTitle.setText(viewModelSerieTitle);
+            }
+        });
+
+        mSerieViewModelActivity.initSerieDescription(this, LinkData);
+        mSerieViewModelActivity.getSerieDescription().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String viewModelSerieDescription) {
+                seriesDesc.setText(viewModelSerieDescription);
+            }
+        });
+
+        mSerieViewModelActivity.initSerieImage(this, LinkData);
+        mSerieViewModelActivity.getSerieImage().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String viewModelSerieImage) {
+                Picasso.get().load(viewModelSerieImage).into(seriesImg);
+            }
+        });
 
 //        (new Thread(new Runnable() {
 //            @Override
@@ -151,6 +181,7 @@ public class SeriesViewActivity extends AppCompatActivity {
 //
 //            }
 //        })).start();
+
 
     }
 }
