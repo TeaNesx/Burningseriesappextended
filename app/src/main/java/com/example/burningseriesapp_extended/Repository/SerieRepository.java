@@ -81,12 +81,4 @@ public class SerieRepository {
 
         return serieURLMutableLiveData;
     }
-
-    public MutableLiveData<List<String>> getSerieURLMutableLiveData() {
-        return serieURLMutableLiveData;
-    }
-
-    public MutableLiveData<List<String>> getSerieNameMutableLiveData() {
-        return serieNameMutableLiveData;
-    }
 }

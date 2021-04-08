@@ -2,6 +2,7 @@ package com.example.burningseriesapp_extended.ViewModel;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -50,23 +51,23 @@ public class SerieViewActivityViewModel extends ViewModel {
         getSerieEpisodeMutableLiveData = mRepoEpisode.getSerieEpisode(context, serieLink, season);
     }
 
-    public MutableLiveData<String> getSerieTitle() {
+    public LiveData<String> getSerieTitle() {
         return getSerieTitleMutableLiveData;
     }
 
-    public MutableLiveData<String> getSerieDescription() {
+    public LiveData<String> getSerieDescription() {
         return getSerieDescriptionMutableLiveData;
     }
 
-    public MutableLiveData<String> getSerieImage() {
+    public LiveData<String> getSerieImage() {
         return getSerieImageMutableLiveData;
     }
 
-    public MutableLiveData<List<String>> getSerieSeason() {
+    public LiveData<List<String>> getSerieSeason() {
         return getSerieSeasonMutableLiveData;
     }
 
-    public MutableLiveData<List<String>> getSerieEpisode() {
+    public LiveData<List<String>> getSerieEpisode() {
         return getSerieEpisodeMutableLiveData;
     }
 }

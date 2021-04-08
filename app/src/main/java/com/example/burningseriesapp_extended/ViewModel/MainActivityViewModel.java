@@ -17,17 +17,17 @@ public class MainActivityViewModel extends ViewModel {
     private MutableLiveData<List<String>> getSerieNameMutableLiveData;
     private SerieRepository mRepoSerie;
 
-    public void init() {
+    public void init(Context context) {
         mRepoSerie = SerieRepository.getInstance();
-        getSerieURLMutableLiveData = mRepoSerie.getSerieNameMutableLiveData();
-        getSerieURLMutableLiveData = mRepoSerie.getSerieURLMutableLiveData();
+        getSerieNameMutableLiveData = mRepoSerie.getSerieName(context);
+        getSerieURLMutableLiveData = mRepoSerie.getSerieUrl(context);
     }
 
-    public MutableLiveData<List<String>> getSerieName(Context context) {
-        return mRepoSerie.getSerieName(context);
+    public LiveData<List<String>> getSerieName() {
+        return getSerieNameMutableLiveData;
     }
 
-    public MutableLiveData<List<String>> getSerieURL(Context context) {
-        return mRepoSerie.getSerieUrl(context);
+    public LiveData<List<String>> getSerieURL() {
+        return getSerieURLMutableLiveData;
     }
 }

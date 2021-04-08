@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mMainActivityViewmodel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        mMainActivityViewmodel.init();
+        mMainActivityViewmodel.init(this);
 
-        mMainActivityViewmodel.getSerieName(this).observe(this, new Observer<List<String>>() {
+        mMainActivityViewmodel.getSerieName().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> SerieName) {
                 adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, SerieName);
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mMainActivityViewmodel.getSerieURL(this).observe(this, new Observer<List<String>>() {
+        mMainActivityViewmodel.getSerieURL().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> serieUrl) {
                 lv_SerieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
