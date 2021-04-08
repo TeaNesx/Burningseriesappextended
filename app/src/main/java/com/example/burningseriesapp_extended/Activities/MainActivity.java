@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mMainActivityViewmodel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        mMainActivityViewmodel.init(this);
 
+        mMainActivityViewmodel.initSerieName(this);
         mMainActivityViewmodel.getSerieName().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> SerieName) {
@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mMainActivityViewmodel.initSerieUrl(this);
         mMainActivityViewmodel.getSerieURL().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> serieUrl) {

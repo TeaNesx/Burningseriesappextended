@@ -17,9 +17,13 @@ public class MainActivityViewModel extends ViewModel {
     private MutableLiveData<List<String>> getSerieNameMutableLiveData;
     private SerieRepository mRepoSerie;
 
-    public void init(Context context) {
+    public void initSerieName(Context context) {
         mRepoSerie = SerieRepository.getInstance();
         getSerieNameMutableLiveData = mRepoSerie.getSerieName(context);
+    }
+
+    public void initSerieUrl(Context context) {
+        mRepoSerie = SerieRepository.getInstance();
         getSerieURLMutableLiveData = mRepoSerie.getSerieUrl(context);
     }
 
