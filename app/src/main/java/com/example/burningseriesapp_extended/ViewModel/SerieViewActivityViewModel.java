@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.burningseriesapp_extended.Repository.EpisodeRepository;
 
-import java.security.spec.ECPoint;
 import java.util.List;
 
 public class SerieViewActivityViewModel extends ViewModel {

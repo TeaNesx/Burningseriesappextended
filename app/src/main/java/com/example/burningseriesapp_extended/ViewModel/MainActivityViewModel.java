@@ -8,14 +8,13 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.burningseriesapp_extended.Repository.SerieRepository;
 
-import java.io.IOException;
 import java.util.List;
 
 public class MainActivityViewModel extends ViewModel {
 
-    private MutableLiveData<List<String>> getSerieURLMutableLiveData;
-    private MutableLiveData<List<String>> getSerieNameMutableLiveData;
-    private SerieRepository mRepoSerie;
+    MutableLiveData<List<String>> getSerieURLMutableLiveData;
+    MutableLiveData<List<String>> getSerieNameMutableLiveData;
+    SerieRepository mRepoSerie;
 
     public void initSerieName(Context context) {
         mRepoSerie = SerieRepository.getInstance();

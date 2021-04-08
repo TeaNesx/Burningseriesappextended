@@ -7,9 +7,6 @@ package com.example.burningseriesapp_extended.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,27 +15,18 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.example.burningseriesapp_extended.R;
-import com.example.burningseriesapp_extended.ViewModel.MainActivityViewModel;
 import com.example.burningseriesapp_extended.ViewModel.SerieViewActivityViewModel;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SeriesViewActivity extends AppCompatActivity {
-    public static String EXTRA_LINK = "com.example.burningseriesapp_extended.EXTRA_LINK";
+
     TextView serieTitle, seriesDesc;
     ImageView seriesImg;
     Spinner seasonTab;
     ListView episodeListview;
     ArrayAdapter<String> adapter, episodeAdapter;
-
     SerieViewActivityViewModel mSerieViewModelActivity;
 
     @Override

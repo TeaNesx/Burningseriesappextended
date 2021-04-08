@@ -13,13 +13,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SerieRepository {
-    private final String TAG = getClass().getSimpleName();
 
-    private static SerieRepository instance;
-    private ArrayList<String> serieURL = new ArrayList<>();
-    private ArrayList<String> serieName = new ArrayList<>();
-    private MutableLiveData <List<String>> serieURLMutableLiveData = new MutableLiveData<>();
-    private MutableLiveData <List<String>> serieNameMutableLiveData = new MutableLiveData<>();
+    static SerieRepository instance;
+    ArrayList<String> serieURL = new ArrayList<>();
+    ArrayList<String> serieName = new ArrayList<>();
+    MutableLiveData <List<String>> serieURLMutableLiveData = new MutableLiveData<>();
+    MutableLiveData <List<String>> serieNameMutableLiveData = new MutableLiveData<>();
 
     public static SerieRepository getInstance(){
         if(instance == null){
@@ -29,11 +28,9 @@ public class SerieRepository {
     }
 
     public MutableLiveData<List<String>> getSerieName(Context context) {
-
         (new Thread(new Runnable() {
             @Override
             public void run() {
-
                 Ion.with(context).load("https://burning-series.io/andere-serien").asString().setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
@@ -45,6 +42,7 @@ public class SerieRepository {
                         while (matcher.find()) {
                             serieName.add(matcher.group(1));
                         }
+
                         serieNameMutableLiveData.setValue(serieName);
                     }
                 });
@@ -56,7 +54,6 @@ public class SerieRepository {
     }
 
     public MutableLiveData<List<String>> getSerieUrl (Context context) {
-
         (new Thread(new Runnable() {
             @Override
             public void run() {

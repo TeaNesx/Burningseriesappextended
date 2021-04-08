@@ -21,19 +21,14 @@ import android.widget.ListView;
 import com.example.burningseriesapp_extended.R;
 import com.example.burningseriesapp_extended.ViewModel.MainActivityViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private final String TAG = getClass().getSimpleName();
-
-    ArrayList<String> SerieList = new ArrayList<>();
-    ArrayList<String> LinkList = new ArrayList<>();
-    MainActivityViewModel mMainActivityViewmodel;
 
     ArrayAdapter adapter;
-    private ListView lv_SerieList;
-    private EditText et_filter;
+    ListView lv_SerieList;
+    EditText et_filter;
+    MainActivityViewModel mMainActivityViewmodel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
